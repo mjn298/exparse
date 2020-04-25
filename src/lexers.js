@@ -8,51 +8,6 @@ const tokenizedItem = (grammar, position, value, type) => {
     }
 }
 
-const numericalSuffixes = ["st", "nd", "rd", "th"]
-
-const ranges = ["through", "to"]
-
-const rangeMethod = (direction) => (position, range) => input => f => f(direction, position, range, input)
-
-const relative = {
-    anterior: {
-        terms: ["before", "preceding"],
-        operation: rangeMethod("backward")
-    },
-    posterior: {
-        terms: ["after", "following"],
-        operation: rangeMethod("forward")
-    },
-    range: {
-        terms: ["through", "to"],
-        operation: rangeMethod("forward")
-    }
-}
-
-const logicalOps = {
-    and: a => b => a && b,
-    or: a => b => a || b,
-}
-
-const datatypes = {
-    string: {
-        terms: ["string", "name", "word", "strings", "names", "words"],
-        operation: s => typeof s === 'string'
-    },
-    email: {
-        terms:["email"],
-        operation: e => isEmail(e)
-    },
-    date: {
-        terms: ["date"],
-        operation: d => !!Date.parse(d) //Date.parse returns NaN if input can't be parsed, so using double NOT to get a boolean
-    },
-}
-
-const isEmail = (word) => {
-    return word.contains("@") && word.split("@").length === 2
-}
-
 /***
  * This finds a token in the string to match, it only finds one.
  * To find more than one it would have to scan the array for pairs of
@@ -120,10 +75,6 @@ const lexer = (queryString) => {
     return lexedWithSearch
 }
 
-
-const expParser = (queryString) => {
-    const rels = lexer(queryString)
-    console.log(rels)
+module.exports {
+    lexer: lexer,
 }
-
-expParser("second through 4th words \"dude man\"")
