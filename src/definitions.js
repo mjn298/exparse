@@ -56,13 +56,5 @@ const isEmail = (word) => {
     return word.contains("@") && word.split("@").length === 2
 }
 
-module.exports = {
-    positional: positional,
-    numericalSuffixes: numericalSuffixes,
-    ranges: ranges,
-    rangeMethod: rangeMethod,
-    relative: relative,
-    logicalOps: logicalOps,
-    datatypes: datatypes,
-    isEmail: isEmail,
-}
+export {positional, numericalSuffixes, ranges, rangeMethod, relative, logicalOps, datatypes}
+

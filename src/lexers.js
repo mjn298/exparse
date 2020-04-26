@@ -1,4 +1,4 @@
-
+import {positional, datatypes, relative} from './definitions.js'
 const tokenizedItem = (grammar, position, value, type) => {
     return {
         grammar: grammar,
@@ -75,6 +75,5 @@ const lexer = (queryString) => {
     return lexedWithSearch
 }
 
-module.exports {
-    lexer: lexer,
-}
+export {lexer}
+
