@@ -1,4 +1,4 @@
-import {positional, datatypes, relative} from './definitions.js'
+import {positional, datatypes, relative} from '../Common/definitions.js'
 const tokenizedItem = (grammar, position, value, type) => {
     return {
         grammar: grammar,
@@ -13,7 +13,7 @@ const tokenizedItem = (grammar, position, value, type) => {
  * To find more than one it would have to scan the array for pairs of
  * quote marks, and then return an array of match tokens.
  * @param queryString: String
- * @returns String
+ * @returns tokenizedItem
  */
 const searchTokenLexer = (queryString) => {
     const openIdx = queryString.indexOf("\"")

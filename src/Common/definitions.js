@@ -15,7 +15,7 @@ const numericalSuffixes = ["st", "nd", "rd", "th"]
 
 const ranges = ["through", "to"]
 
-const rangeMethod = (direction) => (position, range) => input => f => f(direction, position, range, input)
+const rangeMethod = direction => range => position => input => f => f(direction, position, range, input)
 
 const relative = {
     anterior: {
@@ -40,7 +40,7 @@ const logicalOps = {
 const datatypes = {
     string: {
         terms: ["string", "name", "word", "strings", "names", "words"],
-        operation: s => typeof s === 'string'
+        operation: s => typeof s === 'string' && !datatypes.date.operation(s) && !datatypes.num.operation(s) && !isEmail(s)
     },
     email: {
         terms: ["email"],
@@ -48,12 +48,16 @@ const datatypes = {
     },
     date: {
         terms: ["date"],
-        operation: d => !!Date.parse(d) //Date.parse returns NaN if input can't be parsed, so using double NOT to get a boolean
+        operation: d => isNaN(d) && !!Date.parse(d) //Date.parse returns NaN if input can't be parsed, so using double NOT to get a boolean
+    },
+    num: {
+        terms: [],
+        operation: n => !isNaN(n)
     },
 }
 
 const isEmail = (word) => {
-    return word.contains("@") && word.split("@").length === 2
+    return word.includes("@") && word.split("@").length === 2
 }
 
 export {positional, numericalSuffixes, ranges, rangeMethod, relative, logicalOps, datatypes}
