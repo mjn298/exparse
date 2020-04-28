@@ -15,7 +15,13 @@ const numericalSuffixes = ["st", "nd", "rd", "th"]
 
 const ranges = ["through", "to"]
 
-const rangeMethod = direction => range => position => input => f => f(direction, position, range, input)
+const rangeMethod = direction => (position, range) => input => {
+    if (direction === "backward") {
+        return input.slice(position - range, position)
+    } else {
+        return input.slice(position, position + range)
+    }
+}
 
 const relative = {
     anterior: {

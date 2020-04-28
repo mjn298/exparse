@@ -4,7 +4,6 @@ import {relative} from '../Common/definitions.js'
 
 const expParser = (queryString, inputString) => {
     const lexed = lexer(queryString)
-    console.log(lexed)
     const rangeExp = rangeParser(lexed)
     const [start, endOrRange] = [...positionParser(lexed)]
     const nounExp = nounParser(lexed)
@@ -60,21 +59,14 @@ const searchParser = (inputString, lexedExpression) => {
     return {
         inputArray: inputArray,
         searchTerm: ss,
-        searchTermIndex: ss ? inputArray.indexOf(ss.value.replace(" ", "")) : -1
+        searchTermIndex: ss.position ? inputArray.indexOf(ss.value.replace(" ", "")) : -1
     }
 }
 
 const merged = (lexedQuery, lexedInput) => {
     const ps = determinePositions(lexedQuery)
     const ns = determineNouns(lexedQuery)
-    console.log(ps)
-    console.log(ns)
     return lexedInput.filter(item => item[ns[0].type])[ps[0].value].value
 }
 
-const exp = expParser("first through fourth words", "i am an input")
-
-const inp = inputLexer("i am an input")
-
-// console.log(merged(exp, inp))
 export {searchParser, positionParser, nounParser, rangeParser, relativeExpression}
