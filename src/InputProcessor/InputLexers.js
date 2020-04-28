@@ -22,6 +22,6 @@ const lexedInputItem = (val, idx) => {
     return lexedItem
 }
 
-console.log(inputLexer(`i am an@beast input 12 2/12/2020`))
+// console.log(inputLexer(`i am an@beast input 12 2/12/2020`))
 
 export {inputLexer}

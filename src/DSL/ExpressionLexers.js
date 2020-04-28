@@ -16,14 +16,13 @@ const tokenizedItem = (grammar, position, value, type) => {
  * @returns tokenizedItem
  */
 const searchTokenLexer = (queryString) => {
-    const openIdx = queryString.indexOf("\"")
+    const quoteChar = queryString.includes('"') ? '"' : "'"
+    const openIdx = queryString.indexOf(quoteChar)
     if (openIdx === -1) {
         return tokenizedItem(false, false, false, false)
     } else {
-        const closeIdx = queryString.lastIndexOf("\"")
-        const position = queryString.split(" ").findIndex(word => {
-            word.startsWith('"') || word.startsWith("'")
-        })
+        const closeIdx = queryString.lastIndexOf(quoteChar)
+        const position = queryString.split(" ").findIndex(word => word.includes(quoteChar))
         return tokenizedItem("searchKey", position, queryString.slice(openIdx + 1, closeIdx), "searchKey")
     }
 }
@@ -33,7 +32,7 @@ const positionalLexer = (queryArray) => {
         if (positional.hasOwnProperty(word)) {
             return tokenizedItem("positional", idx, positional[word], "index")
         } else if (parseInt(word[0])) {
-            return tokenizedItem("positional", idx, parseInt(word.slice(0, word.length - 2)), "index")
+            return tokenizedItem("positional", idx, parseInt(word.slice(0, word.length - 2)) - 1, "index")
         } else {
             return word
         }
@@ -75,5 +74,5 @@ const lexer = (queryString) => {
     return lexedWithSearch
 }
 
-export {lexer}
+export {lexer, searchTokenLexer, tokenizedItem, positionalLexer, datatypeLexer, relativeLexer}
 
