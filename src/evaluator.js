@@ -3,10 +3,11 @@ import {inputLexer} from "./InputProcessor/InputLexers.js";
 import {combine} from "./DSL/parser2.js"
 
 const evaluator = (inputString, dslString) => {
-    const lexedDSL = lexer(dslString)
-    const {parsedOperator, sanitizedInput} = combine(inputString, lexedDSL)
+    const lowerInput = inputString.toLowerCase()
+    const lowerDSL = dslString.toLowerCase()
+    const lexedDSL = lexer(lowerDSL)
+    const {parsedOperator, sanitizedInput} = combine(lowerInput, lexedDSL)
     const lexedInput = inputLexer(sanitizedInput)
-    console.log(parsedOperator)
     return parsedOperator(lexedInput).join(" ")
 }
 

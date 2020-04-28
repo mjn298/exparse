@@ -32,7 +32,7 @@ const positionalLexer = (queryArray) => {
         if (positional.hasOwnProperty(word)) {
             return tokenizedItem("positional", idx, positional[word], "index")
         } else if (parseInt(word[0])) {
-            return tokenizedItem("positional", idx, parseInt(word.slice(0, word.length - 2)) - 1, "index")
+            return tokenizedItem("positional", idx, parseInt(word) - 1, "index")
         } else {
             return word
         }

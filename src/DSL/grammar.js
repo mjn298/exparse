@@ -11,7 +11,7 @@ const positionWithNoun = (noun, positional) => lexedInput => {
 
 const rangeWithNoun = (noun, startPos, endPos) => lexedInput => {
     const filteredInput = filterByType(noun, lexedInput)
-    return filteredInput.slice(startPos.value, endPos.value + 1).map(i => i.value)
+    return filteredInput.slice(startPos.value, endPos.value + 2).map(i => i.value)
 }
 
 const positionRelativeToNoun = (targetNoun, relativeNoun, relativeToken, positionalToken) => lexedInput => {
@@ -24,13 +24,31 @@ const positionRelativeToNoun = (targetNoun, relativeNoun, relativeToken, positio
     return [target.value]
 }
 const nounRelativeToSearchKey = (targetNoun, searchIndex, relativeToken, positional) => lexedInput => {
-    const range = positional ? positional.value : 1
+    console.log(positional)
+    const range = positional ? positional.value + 1 : 1
     const filteredInput = filterByType(targetNoun, lexedInput)
-    const start = relativeToken.type === 'anterior' ? searchIndex - range : searchIndex
+    const start = relativeToken.type === 'anterior' ? searchIndex - range : searchIndex + 1
     const end = relativeToken.type === 'anterior' ? searchIndex : searchIndex + range
-    return filteredInput.filter(item => {
-        return start <= item.index && item.index <= end && item.index !== searchIndex
+    const comparator = relativeToken.type === 'anterior' ? i => i < searchIndex : i => i > searchIndex
+    // const firstPass = filteredInput.filter(item => {
+    //     console.log(item)
+    //     console.log(start, end)
+    //     return start <= item.index && item.index <= end && item.index !== searchIndex
+    // }).map(i => i.value)
+    const secondPass = filteredInput.filter(item => {
+        return comparator(item.index)
     }).map(i => i.value)
+    if(relativeToken.type === 'anterior') {
+        return secondPass.slice(range * -1)
+    } else {
+        return secondPass.slice(0, range)
+    }
+    // console.log(firstPass)
+    // if(firstPass.length === 0 && range === 1) {
+    //     return [filteredInput.find(item => comparator(item.index)).value]
+    // } else {
+    //     return firstPass
+    // }
 }
 
 export {positionWithNoun, rangeWithNoun, positionRelativeToNoun, nounRelativeToSearchKey}

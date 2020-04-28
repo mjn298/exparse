@@ -49,11 +49,11 @@ const datatypes = {
         operation: s => typeof s === 'string' && !datatypes.date.operation(s) && !datatypes.num.operation(s) && !isEmail(s)
     },
     email: {
-        terms: ["email"],
+        terms: ["email", "emails"],
         operation: e => isEmail(e)
     },
     date: {
-        terms: ["date"],
+        terms: ["date", "dates"],
         operation: d => isNaN(d) && !!Date.parse(d) //Date.parse returns NaN if input can't be parsed, so using double NOT to get a boolean
     },
     num: {
