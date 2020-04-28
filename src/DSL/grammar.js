@@ -28,7 +28,7 @@ const nounRelativeToSearchKey = (targetNoun, searchIndex, relativeToken, positio
     const filteredInput = filterByType(targetNoun, lexedInput)
     const start = relativeToken.type === 'anterior' ? searchIndex - range : searchIndex
     const end = relativeToken.type === 'anterior' ? searchIndex : searchIndex + range
-    return lexedInput.filter(item => {
+    return filteredInput.filter(item => {
         return start <= item.index && item.index <= end && item.index !== searchIndex
     }).map(i => i.value)
 }
