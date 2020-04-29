@@ -2,7 +2,7 @@ import {Button, Container, Form, FormGroup, Input, Label} from "reactstrap";
 import {BerthaListGroup} from "./BerthaListGroup";
 import React from "react";
 
-const apiEndpoint = "http://localhost:3000"
+const apiEndpoint = "http://localhost:5050"
 
 class Bertha extends React.Component {
     constructor(props) {
