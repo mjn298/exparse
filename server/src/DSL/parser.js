@@ -35,7 +35,7 @@ const parser = (searchOutput, lexedExpression) => {
         positionals.sort((a, b) => a.value - b.value)
         return grammar.rangeWithNoun(nouns[0], positionals[0], positionals[1])
     } else if (nouns.length === 2 && relatives.length === 1) {
-        const defaultToken = tokenizedItem("positional", 1000, 1, "index")
+        const defaultToken = tokenizedItem("positional", 1000, 0, "index")
         const posToken = positionals.length > 0 ? positionals[0] : defaultToken
         const targetNoun = nouns.find(n => n.position < relatives[0].position)
         const relativeNoun = nouns.find(n => n.position > relatives[0].position)

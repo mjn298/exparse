@@ -64,3 +64,19 @@ test("2 dates after 'Phone'", t => {
     const expected = "4/25/2020 4/30/2020"
     t.is(output, expected)
 })
+
+test("string before second dollars", t => {
+    const input = "send me $10 always $12"
+    const dsl = "string before second dollars"
+    const output = evaluator(input, dsl)
+    const expected = "always"
+    t.is(output, expected)
+})
+
+test("string after third dollars", t => {
+    const input = "It can either be $15 or $25 or $40 depending on what you need"
+    const dsl = "string after third dollars"
+    const output = evaluator(input, dsl)
+    const expected = "depending"
+    t.is(output, expected)
+})

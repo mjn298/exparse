@@ -26,11 +26,12 @@ test('Positional Lexer', t => {
 })
 
 test('datatypeLexer', t => {
-    const output = lexers.datatypeLexer(toArr("email word date"))
+    const output = lexers.datatypeLexer(toArr("email word date dollar"))
     const expected = [
         lexers.tokenizedItem("noun", 0, "email", "email"),
         lexers.tokenizedItem("noun", 1, "word", "string"),
-        lexers.tokenizedItem("noun", 2, "date", "date")
+        lexers.tokenizedItem("noun", 2, "date", "date"),
+        lexers.tokenizedItem("noun", 3,"dollar", "dollar")
     ]
     t.deepEqual(output, expected)
 })

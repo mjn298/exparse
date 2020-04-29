@@ -14,10 +14,10 @@ const rangeWithNoun = (noun, startPos, endPos) => lexedInput => {
     return filteredInput.slice(startPos.value, endPos.value + 1).map(i => i.value)
 }
 
-const positionRelativeToNoun = (targetNoun, relativeNoun, relativeToken, positionalToken) => lexedInput => {
+const positionRelativeToNoun = (targetNoun, relativeNoun, relativeToken, positionalToken, relPositionalToken) => lexedInput => {
     const relatives = filterByType(relativeNoun, lexedInput)
     const positionOfRelative = relatives[positionalToken.value].index
-    const comparator = relativeToken.type === 'anterior' ? (a, b) => a < b : (a, b) => a > b
+    const comparator = relativeToken.type === 'anterior' ? (a, b) => b - a === 1 : (a, b) => a - b === 1
     const target = lexedInput.find(item => {
         return item[targetNoun.type] && comparator(item.index, positionOfRelative)
     })

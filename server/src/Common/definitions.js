@@ -46,7 +46,7 @@ const logicalOps = {
 const datatypes = {
     string: {
         terms: ["string", "name", "word", "strings", "names", "words"],
-        operation: s => typeof s === 'string' && !datatypes.date.operation(s) && !datatypes.num.operation(s) && !isEmail(s)
+        operation: s => typeof s === 'string' && !datatypes.date.operation(s) && !datatypes.num.operation(s) && !isEmail(s) && !s.startsWith("$")
     },
     email: {
         terms: ["email", "emails"],
@@ -60,6 +60,10 @@ const datatypes = {
         terms: [],
         operation: n => !isNaN(n)
     },
+    dollar: {
+        terms: ["dollar", "dollars"],
+        operation: d => d.startsWith("$")
+    }
 }
 
 const isEmail = (word) => {
