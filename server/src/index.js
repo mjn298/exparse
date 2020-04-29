@@ -1,16 +1,16 @@
 import express from 'express'
+import cors from 'cors'
 import {evaluator} from "./evaluator.js";
 
 const app = express()
 const port = 3000
 
-app.get('/', (req, res) => res.send('Hello World'))
 app.use(express.json())
 app.use((err, req, res, next) => {
     res.status(500).json({err: err.message})
 })
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
-app.post('/parse', (req, res, next) => {
+app.post('/parse', cors(), (req, res, next) => {
    let inputText, inputDsl, evaluatedExpression
    try {
        inputText = req.body.text

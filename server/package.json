@@ -5,15 +5,16 @@
   "type": "module",
   "main": "src/index.js",
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "start": "node src/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.17.1"
   },
   "devDependencies": {
-    "ava": "^3.8.1",
-    "exlint": "^0.1.6"
+    "ava": "^3.8.1"
   }
 }
