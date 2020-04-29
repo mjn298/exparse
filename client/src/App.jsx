@@ -20,6 +20,7 @@ const App = () => (
                     <ListGroupItem><b>Strings: </b> word(s), string(s), name(s)</ListGroupItem>
                     <ListGroupItem><b>Emails: </b> email(s)</ListGroupItem>
                     <ListGroupItem><b>Dates: </b> date(s)</ListGroupItem>
+                    <ListGroupItem><b>Dollars: </b> dollar(s)</ListGroupItem>
                     <ListGroupItemHeading>Search Term</ListGroupItemHeading>
                     <ListGroupItem>BERTHA can accommodate one search term passed in quotes. Whitespace and non alphabetical characters are OK.</ListGroupItem>
                     <ListGroupItemHeading>Position or Cardinality</ListGroupItemHeading>
@@ -33,6 +34,11 @@ const App = () => (
                     <ListGroupItem>Position and Datatype: text: "our first date was 4/01/2020 and our second date was 4/25/2020" rule: "second date" </ListGroupItem>
                     <ListGroupItem>Relative and Search Token: text:"don't forget to call their Phone Number" rule: string preceding "Phone"</ListGroupItem>
                     <ListGroupItem>Range: text: "i have words 4/28/2020 in here man" rule: "second through 4th words"</ListGroupItem>
+                    <ListGroupItem>Relative to Datatype: text: "it can either be $5 or $10 or $20 depending on what you do" rule: "word [before | after] third dollars" This will return the word immediately before or after the "third dollars"</ListGroupItem>
+                    <ListGroupItemHeading>Limitations</ListGroupItemHeading>
+                    <ListGroupItem>BERTHA cannot read multiple search tokens. BERTHA can also not accept numbers as english nouns ie, must be "3" and not "three"</ListGroupItem>
+                    <ListGroupItem>BERTHA cannot process ranges of a DataType relative to another DataType, ie "third word after second dollar" does not work yet. There is a path for this, as that is a composition
+                    f(g()) of f(datatype, range, searchTerm) and g(position, datatype), so it's likely possible</ListGroupItem>
                     <p>Please see server/spec/evaluator.ft.spec.js for more examples</p>
                 </ListGroup>
             </Jumbotron>
