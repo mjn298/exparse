@@ -9,6 +9,7 @@ import {whatever} from 'somewhere')
 NVM is a good way to manage different Node versions.
 
 Once cloning/downloading the source code, perform `npm install` in both the `client` and `server` directories.
+If there are issues with the install, delete the "package-lock.json" files in `client` and `server`. 
 
 ##Operation
 After `npm install`, perform `npm start` in both the client and server directories.
