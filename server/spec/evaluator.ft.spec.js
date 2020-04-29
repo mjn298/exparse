@@ -21,7 +21,7 @@ test("second through 4th word", t => {
     const input = "i have words 4/28/2020 in here man"
     const dsl = "second through 4th word"
     const output = evaluator(input, dsl)
-    const expected = "have words in here"
+    const expected = "have words in"
     t.is(output, expected)
 })
 

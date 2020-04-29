@@ -11,7 +11,7 @@ const positionWithNoun = (noun, positional) => lexedInput => {
 
 const rangeWithNoun = (noun, startPos, endPos) => lexedInput => {
     const filteredInput = filterByType(noun, lexedInput)
-    return filteredInput.slice(startPos.value, endPos.value + 2).map(i => i.value)
+    return filteredInput.slice(startPos.value, endPos.value + 1).map(i => i.value)
 }
 
 const positionRelativeToNoun = (targetNoun, relativeNoun, relativeToken, positionalToken) => lexedInput => {
