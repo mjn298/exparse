@@ -1,72 +1,56 @@
-import {lexer} from './ExpressionLexers.js'
-import {inputLexer} from '../InputProcessor/InputLexers.js'
-import {relative} from '../Common/definitions.js'
+import * as grammar from "./grammar.js";
+import {tokenizedItem} from "./ExpressionLexers.js";
 
-const expParser = (queryString, inputString) => {
-    const lexed = lexer(queryString)
-    const rangeExp = rangeParser(lexed)
-    const [start, endOrRange] = [...positionParser(lexed)]
-    const nounExp = nounParser(lexed)
-    const {inputArray, searchTerm, searchTermIndex} = searchParser(inputString, lexed)
-}
-
-const rangeExpression = (start, end) => a => f => f(a).slice(start, end)
-const relativeExpression = type => start => range => {
-    if(type === 'range') {
-        return rangeExpression(start, range)
-    }
-   const end = type === "anterior" ? start - range : start + range
-   return rangeExpression(Math.min(start, end), Math.max(start, end))
-}
-
-const combinator = input => searchParser => positionalParser => rangeParser => nounParser => {
-    return nounParser(rangeParser(positionalParser(searchParser(input))))
-}
-
-const positionParser = (lexedExpression) => {
-    // const searchKey = searchParser(lexedExpression)
-    const ps = lexedExpression.filter(item => item.grammar === "positional")
-    return ps.map(i => i.value)
-}
-
-const nounParser = lexedExpression => {
-    const ns = lexedExpression.find(item => item.grammar === "noun")
-    try {
-        const noun = ns
-        return a => a.filter(item => item[noun.type])
-    } catch {
-        throw new Error("Expression must contain a noun (word, email, date, string)")
-    }
-}
-
-const rangeParser = lexedExpression => {
-    const r = lexedExpression.find(item => item.grammar === "relative")
-    if(r) {
-        return relativeExpression(r.type)
-    } else {
-        return a => a
-    }
-}
-
-const searchParser = (inputString, lexedExpression) => {
+const searchEvaluator = (inputString, lexedExpression) => {
     const ss = lexedExpression.find(item => item.type === "searchKey")
-    let inputArray;
+    let sanitizedString;
+    let searchPosition
     if(ss) {
-        inputArray = inputString.replace(ss.value, ss.value.replace(" ", "")).split(" ")
-     } else {
-        inputArray = inputString.split(" ")
+        sanitizedString = inputString.replace(ss.value, ss.value.replace(" ", ""))
+        searchPosition = ss.position
+    } else {
+        sanitizedString = inputString
+        searchPosition = 0
     }
+    const inputArray = sanitizedString.split(" ")
     return {
-        inputArray: inputArray,
+        inputString: sanitizedString,
         searchTerm: ss,
-        searchTermIndex: ss.position ? inputArray.indexOf(ss.value.replace(" ", "")) : -1
+        searchTermIndex: searchPosition ? inputArray.indexOf(ss.value.replace(" ", "")) : -1
     }
 }
 
-const merged = (lexedQuery, lexedInput) => {
-    const ps = determinePositions(lexedQuery)
-    const ns = determineNouns(lexedQuery)
-    return lexedInput.filter(item => item[ns[0].type])[ps[0].value].value
+const parser = (searchOutput, lexedExpression) => {
+    const nouns = lexedExpression.filter(item => item.grammar === "noun")
+    const relatives = lexedExpression.filter(item => item.grammar === "relative")
+    const positionals = lexedExpression.filter(item => item.grammar === "positional")
+    if (searchOutput.searchTerm) {
+        const noun = lexedExpression.find(item => item.grammar === "noun")
+        const relativeToken = lexedExpression.find(item => item.grammar === "relative")
+        const positional = lexedExpression.find(item => item.grammar === "positional")
+        return grammar.nounRelativeToSearchKey(noun, searchOutput.searchTermIndex, relativeToken, positional)
+    } else if (nouns.length === 1 && positionals.length === 1) {
+        return grammar.positionWithNoun(nouns[0], positionals[0])
+    } else if (nouns.length === 1 && positionals.length === 2 && relatives.length === 1) {
+        positionals.sort((a, b) => a.value - b.value)
+        return grammar.rangeWithNoun(nouns[0], positionals[0], positionals[1])
+    } else if (nouns.length === 2 && relatives.length === 1) {
+        const defaultToken = tokenizedItem("positional", 1000, 1, "index")
+        const posToken = positionals.length > 0 ? positionals[0] : defaultToken
+        const targetNoun = nouns.find(n => n.position < relatives[0].position)
+        const relativeNoun = nouns.find(n => n.position > relatives[0].position)
+        return grammar.positionRelativeToNoun(targetNoun, relativeNoun, relatives[0], posToken)
+    } else {
+        return new Error("DSL Parsing Error")
+    }
 }
 
-export {searchParser, positionParser, nounParser, rangeParser, relativeExpression}
+const combine = (inputString, lexedExpression) => {
+        const searchOutput = searchEvaluator(inputString, lexedExpression)
+        return {
+            parsedOperator: parser(searchOutput, lexedExpression),
+            sanitizedInput: searchOutput.inputString
+        }
+}
+
+export {combine}
