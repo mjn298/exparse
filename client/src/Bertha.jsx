@@ -30,8 +30,6 @@ class Bertha extends React.Component {
 
     async componentDidUpdate(prevProps, prevState) {
         if (this.state.inputText !== prevState.inputText || this.state.dslText != prevState.dslText) {
-            console.log("hello")
-            console.log(this.state.inputText)
             try {
                 const requestOptions = {
                     method: 'POST',

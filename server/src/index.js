@@ -12,7 +12,6 @@ app.use((err, req, res, next) => {
 })
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 app.post('/parse', (req, res, next) => {
-    console.log(`I've been called with ${req.body}`)
    let inputText, inputDsl, evaluatedExpression
    try {
        inputText = req.body.text
