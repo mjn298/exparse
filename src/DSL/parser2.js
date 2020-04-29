@@ -41,7 +41,7 @@ const parser = (searchOutput, lexedExpression) => {
         const relativeNoun = nouns.find(n => n.position > relatives[0].position)
         return grammar.positionRelativeToNoun(targetNoun, relativeNoun, relatives[0], posToken)
     } else {
-        throw new Error("Invalid Input")
+        return new Error("DSL Parsing Error")
     }
 }
 
